@@ -19,10 +19,6 @@ class GetRecordingTest(unittest.TestCase):
 
         self.assertEqual(4, len(rels))
         # Original attributes
-        print(rels[0])
-        print(rels[1])
-        print(rels[2])
-        print(rels[3])
         attributes = rels[0]["attribute-list"]
         self.assertEqual("piano", attributes[0])
 
@@ -36,3 +32,15 @@ class GetRecordingTest(unittest.TestCase):
     def testFirstReleaseDate(self):
         res = _common.open_and_parse_test_data(self.datadir, "f606f733-c1eb-43f3-93c1-71994ea611e3-artist-rels.xml")
         self.assertEqual(res["recording"]["first-release-date"], "1984")
+
+    def testTagsAndGenres(self):
+        res = _common.open_and_parse_test_data(self.datadir, "58169b2c-e31a-4a46-8741-71c672a089ac-tags-genres.xml")
+        recording = res["recording"]
+
+        tags = recording["tag-list"]
+        self.assertEqual(len(tags), 7)
+        self.assertEqual(tags[0], {"name": "classic pop", "count": "1"})
+
+        genres = recording["genre-list"]
+        self.assertEqual(len(genres), 5)
+        self.assertEqual(genres[0], {"name": "classic rock", "count": "2", "id": "93244085-20e5-4f16-9067-1d19143b3810"})
